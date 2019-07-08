@@ -1,1 +1,43 @@
 
+#coding:utf-8
+ 
+import numpy as np
+from numpy.linalg import solve
+import time
+from scipy.sparse.linalg import gmres,lgmres
+from scipy.sparse import csr_matrix
+ 
+alpha=0.8
+vertex=['A','B','C','a','b','c','d']
+# M = np.matrix([[0,        0,        0,        0.5,      0,        0.333,    0],
+#                    [0,        0,        0,        0.5,      1.0,      0.333,    0.5],
+#                    [0,        0,        0,        0,        0,        0.333,    0.5],
+#                    [0.5,      0.25,     0,        0,        0,        0,        0],
+#                    [0,        0.25,     0,        0,        0,        0,        0],
+#                    [0.5,      0.25,     0.5,      0,        0,        0,        0],
+#                    [0,        0.25,     0.5,      0,        0,        0,        0]])
+
+M=np.matrix([[0,        0,        0,        0.5,      0,        0.5,      0],
+                   [0,        0,        0,        0.25,     0.25,     0.25,     0.25],
+                   [0,        0,        0,        0,        0,        0.5,      0.5],
+                   [0.5,      0.5,      0,        0,        0,        0,        0],
+                   [0,        1.0,      0,        0,        0,        0,        0],
+                   [0.333,    0.333,    0.333,    0,        0,        0,        0],
+                   [0,        0.5,      0.5,      0,        0,        0,        0]])
+
+r0=np.matrix([[0],[0],[0],[0],[0],[0],[0]])#从'A'开始游走
+
+    #直接解线性方程法
+A=np.eye(n)-alpha*M.T
+b=np.eye(n)*(1-alpha)
+begin=time.time()
+r=solve(A,b)
+end=time.time()
+print('user time',end-begin)
+rank={}
+# for j in np.arange(n):
+#     rank[vertex[j]]=r[j]
+# for ele in vertex:
+#     print(ele, rank[ele])
+for i in range(r.shape[1]):
+    print(i, r[:,i])
